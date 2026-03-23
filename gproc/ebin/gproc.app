@@ -1,0 +1,9 @@
+{application,gproc,
+             [{description,"GPROC"},
+              {vsn,"0.0.0.2"},
+              {id,"GPROC"},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {mod,{gproc_app,[]}},
+              {modules,[gproc,gproc_app,gproc_info,gproc_init,gproc_lib,
+                        gproc_monitor,gproc_ps,gproc_sup]}]}.
