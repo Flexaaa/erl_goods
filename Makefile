@@ -14,11 +14,16 @@ GPROC_OUT = gproc/ebin
 JSX_SRCS = $(wildcard jsx/src/*.erl)
 JSX_OUT = jsx/ebin
 
-ERL_OPTS = -pa goods/ebin -pa misultin/ebin -pa gproc/ebin -pa jsx/ebin
+ERL_OPTS = -pa goods/ebin -pa misultin/ebin -pa gproc/ebin -pa jsx/ebin -pa cowboy/ebin -pa ranch/ebin -pa cowlib/ebin
 
 all: compile
 
-compile:
+deps:
+	$(MAKE) -C ranch
+	$(MAKE) -C cowlib
+	$(MAKE) -C cowboy
+
+compile: deps
 	$(ERLC) -I misultin/include -I misultin/src -o $(MISULTIN_OUT) $(MISULTIN_SRCS)
 	$(ERLC) -I gproc/include -o $(GPROC_OUT) $(GPROC_SRCS)
 	$(ERLC) -I jsx/include -o $(JSX_OUT) $(JSX_SRCS)
@@ -34,10 +39,11 @@ run-app: compile
 		-kernel logger_level info \
 		-eval "application:ensure_all_started(gproc), \
 		       application:ensure_all_started(inets), \
+			   application:ensure_all_started(cowboy), \
 		       application:start(goods_app)."
 
 # тестировалось на локальном сервере, для этого использовал параметр перед eval
-# 		-goods_server_app url '"http://localhost:6666"' \
+# 		-goods_app url '"http://localhost:6666"' \
 
 #Запуск тестов
 tests: compile-tests

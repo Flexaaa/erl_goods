@@ -37,16 +37,18 @@ put(Entries) ->
 
 
 get_data_test()->
-    application:ensure_all_started(gproc),
+    %application:ensure_all_started(gproc),
     ok = application:ensure_started(inets),
+    application:ensure_all_started(cowboy),
     TestPid = self(),
     application:set_env(goods_requester_test, notify_pid, TestPid),
 
     MockHttpPort = 5555,
-    {ok,MockPid} = mock_data_server:start_link([{port, MockHttpPort}, {data, ?TEST_DATA}]),
-    application:get_env(goods_server_app, timeout, 1000),
-    application:set_env(goods_server_app, url, "http://localhost:" ++ integer_to_list(MockHttpPort) ++ "/data"),
-    application:set_env(goods_server_app, module, goods_requester_test),
+    {ok,MockPid} = mock_cowboy_server:start_link([{port, MockHttpPort}, {data, ?TEST_DATA}]),
+    %{ok,MockPid} = mock_misultin_server:start_link([{port, MockHttpPort}, {data, ?TEST_DATA}]),
+    application:get_env(goods_app, timeout, 1000),
+    application:set_env(goods_app, url, "http://localhost:" ++ integer_to_list(MockHttpPort) ++ "/data"),
+    application:set_env(goods_app, module, goods_requester_test),
     {ok,RequesterPid} = goods_requester:start_link(),
 
     receive

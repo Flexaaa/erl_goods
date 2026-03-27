@@ -10,7 +10,7 @@
 -export([start_link/0, set_timeout/1]).
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
 
--record(state, {    
+-record(state, {
     timeout          :: integer(),
     url              :: string(),
     mod              :: module(),
@@ -24,9 +24,9 @@ set_timeout(Timeout) ->
     gen_server:call(?MODULE, {set_timeout, Timeout}).
 
 init([]) ->
-    Timeout = application:get_env(goods_server_app, timeout, ?DEFAULT_TIMEOUT),
-    Url = application:get_env(goods_server_app, url, ?DEFAULT_URL),
-    ModName = application:get_env(goods_server_app, module, goods_db),
+    Timeout = application:get_env(goods_app, timeout, ?DEFAULT_TIMEOUT),
+    Url = application:get_env(goods_app, url, ?DEFAULT_URL),
+    ModName = application:get_env(goods_app, module, goods_db),
     ?LOG_INFO("goods_requester Timeout=~p, Url=~p, ModName=~p", [Timeout,Url, ModName]),
     erlang:send_after(500, self(), get_data),
     {ok, #state{timeout = Timeout, url = Url, mod = ModName}}.

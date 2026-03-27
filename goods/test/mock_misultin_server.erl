@@ -1,4 +1,4 @@
--module(mock_data_server).
+-module(mock_misultin_server).
 
 -include_lib("eunit/include/eunit.hrl").
 -include_lib("kernel/include/logger.hrl").
@@ -15,7 +15,7 @@ start_link(Options) ->
     ?debugFmt("starting server on port ~p data= ~p~n", [Port,Data]),
 
 	misultin:start_link([
-        {name, mock_data_server},
+        {name, mock_misultin_server},
         {port, Port},
         {loop, fun(Req) -> handle_http_safe(Req, #state{data = Data}) end}
     ]).

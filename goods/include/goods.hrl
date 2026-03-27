@@ -8,9 +8,9 @@
 }).
 
 -record(goods_search_options, {
-    start_date :: undefined | string(),
-    end_date   :: undefined | string(),
-    id         :: undefined | string()
+    start_date :: undefined | binary(),
+    end_date   :: undefined | binary(),
+    id         :: undefined | integer()
 }).
 
 -type goods_search_options() :: #goods_search_options{}.
