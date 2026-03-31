@@ -31,7 +31,7 @@ compile: deps
 	$(ERLC) -I goods/include -o $(GOODS_OUT) $(GOODS_SRCS)
 	@echo "Компиляция завершена."
 
-compile-tests:
+compile-tests: compile
 	$(ERLC) -DTEST -I goods/include -o $(GOODS_OUT) $(GOODS_TESTS)
 
 # Запуск приложения
